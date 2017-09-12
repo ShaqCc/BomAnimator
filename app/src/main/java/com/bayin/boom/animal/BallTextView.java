@@ -1,4 +1,4 @@
-package com.bayin.boom;
+package com.bayin.boom.animal;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -7,6 +7,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.widget.TextView;
+
+import com.bayin.boom.R;
 
 /**
  * Created by Administrator on 2017/9/11.

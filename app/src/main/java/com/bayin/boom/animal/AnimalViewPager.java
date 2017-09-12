@@ -1,4 +1,4 @@
-package com.bayin.boom;
+package com.bayin.boom.animal;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,6 +15,8 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.bayin.boom.R;
 
 /****************************************
  * 功能说明:  

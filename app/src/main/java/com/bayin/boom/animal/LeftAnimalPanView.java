@@ -1,6 +1,5 @@
-package com.bayin.boom;
+package com.bayin.boom.animal;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -8,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.os.Handler;
 import android.os.Message;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -16,53 +14,53 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.bayin.boom.R;
+import com.bayin.boom.ScreenUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 右边轮盘
+ * 左边轮盘
  * <p>
  * Created by Administrator on 2017/9/11.
  */
 
-public class RightAnimalPanView extends View {
-    private static final String TAG = "RightAnimalPanView";
-    private Bitmap mBitmapRight;
+public class LeftAnimalPanView extends View {
+    private static final String TAG = "LeftAnimalPanView";
+    private Bitmap mBitmapLeft;
     private int screenWidth;
     private int screenHeight;
     private int mLeft;
     private int mTop;
-    private int index = -1;
+    private int index = 6;
     private boolean isPlaying = false;
     private List<Bitmap> mBitmapList;
-    private int[] mBitmapResources = {
-            R.mipmap.animal_font_6, R.mipmap.animal_font_7,
-            R.mipmap.animal_font_8, R.mipmap.animal_font_9,
-            R.mipmap.animal_font_10, R.mipmap.animal_font_11};
+    private int[] mBitmapResources = {R.mipmap.animal_font_0, R.mipmap.animal_font_1,
+            R.mipmap.animal_font_2, R.mipmap.animal_font_3,
+            R.mipmap.animal_font_4, R.mipmap.animal_font_5};
     private int mAnimalTop;
     private int mAnimalLeft;
-    private Context mCtx;
 
-    public RightAnimalPanView(Context context) {
+    public LeftAnimalPanView(Context context) {
         this(context, null);
     }
 
-    public RightAnimalPanView(Context context, @Nullable AttributeSet attrs) {
+    public LeftAnimalPanView(Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public RightAnimalPanView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    public LeftAnimalPanView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mCtx = context;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         screenWidth = display.getWidth();
         screenHeight = display.getHeight();
         mPaint = new Paint();
-        mBitmapRight = BitmapFactory.decodeResource(getResources(), R.mipmap.lunpan_right_2x);
+        mBitmapLeft = BitmapFactory.decodeResource(getResources(), R.mipmap.lunpan_left_2x);
         //轮盘边界
-        mLeft = (screenWidth - mBitmapRight.getWidth()) / 2;
-        mTop = (screenHeight - mBitmapRight.getHeight()) / 2;
+        mLeft = (screenWidth - mBitmapLeft.getWidth()) / 2;
+        mTop = (screenHeight - mBitmapLeft.getHeight()) / 2;
         init();
     }
 
@@ -92,15 +90,16 @@ public class RightAnimalPanView extends View {
         super.onDraw(canvas);
         canvas.save();
         int statusBarHeight = ScreenUtils.getStatusBarHeight(getContext());
-        canvas.translate(0,-statusBarHeight/2);
+        Log.i(TAG, "状态栏高度:" + statusBarHeight);
+        canvas.translate(0, -statusBarHeight/2);
         //draw 背景
-        canvas.drawBitmap(mBitmapRight, mLeft, mTop, mPaint);
+        canvas.drawBitmap(mBitmapLeft, mLeft, mTop, mPaint);
         //draw 文字
         drawNormalText(canvas);
         canvas.restore();
     }
 
-    private float degreeUnit = 30;
+    private float degreeUnit = -30;
     private float degreeOffset = degreeUnit / 2;
     private int animalOffset = 55;
 
@@ -141,12 +140,12 @@ public class RightAnimalPanView extends View {
             super.handleMessage(msg);
             switch (msg.what) {
                 case 1:
-                    if (index < mBitmapResources.length - 1) {
-                        index++;
+                    if (index > 0) {
+                        index--;
                         setIndex(index);
                         handler.sendEmptyMessageDelayed(1, 100);
                     } else {
-                        index = -1;
+                        index = 6;
                         handler.sendEmptyMessage(2);
                     }
                     break;
@@ -166,7 +165,7 @@ public class RightAnimalPanView extends View {
     }
 
     public void stop() {
-        index = -1;
+        index = 6;
         invalidate();
     }
 }

@@ -1,4 +1,4 @@
-package com.bayin.boom;
+package com.bayin.boom.animal;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,6 +10,8 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.bayin.boom.R;
 
 import java.util.ArrayList;
 import java.util.List;

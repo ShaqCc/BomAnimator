@@ -14,10 +14,13 @@ public class ScreenUtils {
 
     public static int getScreenHeight(Context context){
         WindowManager wg = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        int height = wg.getDefaultDisplay().getHeight();
-        return height;
+        return wg.getDefaultDisplay().getHeight();
     }
 
+    public static int getScreenWidth(Context context){
+        WindowManager wg = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        return wg.getDefaultDisplay().getWidth();
+    }
 
     public static int getStatusBarHeight(Context context) {
         int statusBarHeight1 = -1;

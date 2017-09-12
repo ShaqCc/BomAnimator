@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.bayin.boom.MainActivity">
 
-    <com.bayin.boom.BallTextView
+    <com.bayin.boom.animal.BallTextView
         android:id="@+id/tv_result"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,24 +36,24 @@
     </LinearLayout>
 
 
-    <com.bayin.boom.LeftAnimalPanView
+    <com.bayin.boom.animal.LeftAnimalPanView
         android:id="@+id/leftView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="left"/>
 
-    <!--<com.bayin.boom.CenterAnimalView-->
+    <!--<com.bayin.boom.animal.CenterAnimalView-->
         <!--android:id="@+id/centerView"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
         <!--android:layout_gravity="center"/>-->
-    <com.bayin.boom.AnimalViewPager
+    <com.bayin.boom.animal.AnimalViewPager
         android:id="@+id/animalPager"
         android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <com.bayin.boom.RightAnimalPanView
+    <com.bayin.boom.animal.RightAnimalPanView
         android:id="@+id/rightView"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"

@@ -1,4 +1,4 @@
-package com.bayin.boom;
+package com.bayin.boom.animal;
 
 /**
  * Created by Administrator on 2017/9/11.

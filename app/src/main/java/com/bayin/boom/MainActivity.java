@@ -11,6 +11,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 
+import com.bayin.boom.animal.AnimalViewPager;
+import com.bayin.boom.animal.BallTextView;
+import com.bayin.boom.animal.LeftAnimalPanView;
+import com.bayin.boom.animal.RightAnimalPanView;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final int BREAK = -1;//handler 终止跑马灯tag，开大门
