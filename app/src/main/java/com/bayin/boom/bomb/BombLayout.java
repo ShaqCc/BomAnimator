@@ -33,6 +33,7 @@ public class BombLayout extends FrameLayout {
     private TimeView mTimeView;
     private int mScreenWidth;
     private int mScreenHeight;
+    private int offset;//刻度的偏移量
 
     public BombLayout(@NonNull Context context) {
         this(context, null);
@@ -46,12 +47,21 @@ public class BombLayout extends FrameLayout {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
 
-        mBitmapBomb = BitmapFactory.decodeResource(getResources(), R.mipmap.zhadan_2x);
-        mPaint = new Paint();
-
         //屏幕尺寸
         mScreenWidth = ScreenUtils.getScreenWidth(context);
         mScreenHeight = ScreenUtils.getScreenHeight(context);
+
+
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+
+        mBitmapBomb = BitmapFactory.decodeResource(getResources(), R.mipmap.bomb,options);
+        if (options.outWidth<mScreenWidth){
+            options.inSampleSize = options.outWidth/mScreenWidth;
+        }
+        options.inJustDecodeBounds = false;
+        mBitmapBomb = BitmapFactory.decodeResource(getResources(),R.mipmap.bomb,options);
+        mPaint = new Paint();
 
         //炸弹的范围
         mMBombTop = (mScreenHeight - mBitmapBomb.getHeight()) / 2;
@@ -59,11 +69,9 @@ public class BombLayout extends FrameLayout {
             mBombLeft = (mScreenWidth - mBitmapBomb.getWidth()) / 2;
         } else mBombLeft = 0;
 
-        //添加炸弹
-//        mImageBomb = new ImageView(context);
-//        mImageBomb.setImageResource(R.mipmap.bomb);
-//        addView(mImageBomb);
-        //刻度半径
+        //设置偏移量
+        offset = ScreenUtils.getFormatWidth(13, mScreenWidth);
+
         //添加刻度view
         mTimeView = new TimeView(context);
         addView(mTimeView);
@@ -89,10 +97,11 @@ public class BombLayout extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        int timeLeft = (int) (mScreenWidth * 0.4) + 5;
-        int timeTop = (int) (mScreenHeight * 0.4) + 10;
-        Log.i(TAG, "时间板范围：" + timeLeft + "  " + timeTop + "   " + (timeLeft + mTimeView.getMeasuredWidth()) + "   " + (timeTop + mTimeView.getMeasuredHeight()));
-        mTimeView.layout(timeLeft, timeTop, timeLeft + mTimeView.getMeasuredWidth(), timeTop + mTimeView.getMeasuredHeight());
+        int timeLeft = (int) (mScreenWidth * 0.35)+offset;
+        int timeTop = (int) (mScreenHeight * 0.33)+offset;
+//        Log.i(TAG, "时间板范围：" + timeLeft + "  " + timeTop + "   " + (timeLeft + mTimeView.getMeasuredWidth()) + "   " + (timeTop + mTimeView.getMeasuredHeight()));
+        Log.i(TAG, "时间板范围：" + timeLeft + "  " + timeTop + "   " + right + "   " + bottom);
+        mTimeView.layout(timeLeft, timeTop, right, timeTop +bottom);
 
     }
 }

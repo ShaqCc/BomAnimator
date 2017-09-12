@@ -4,6 +4,9 @@ import android.content.Context;
 import android.util.Log;
 import android.view.WindowManager;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+
 /****************************************
  * 功能说明:  
  *
@@ -11,13 +14,14 @@ import android.view.WindowManager;
  ****************************************/
 
 public class ScreenUtils {
+    private static String TAG = "--ScreenUtils--";
 
-    public static int getScreenHeight(Context context){
+    public static int getScreenHeight(Context context) {
         WindowManager wg = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         return wg.getDefaultDisplay().getHeight();
     }
 
-    public static int getScreenWidth(Context context){
+    public static int getScreenWidth(Context context) {
         WindowManager wg = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         return wg.getDefaultDisplay().getWidth();
     }
@@ -32,5 +36,17 @@ public class ScreenUtils {
         }
         Log.e("WangJ", "状态栏-方法1:" + statusBarHeight1);
         return statusBarHeight1;
+    }
+
+    public static int getFormatWidth(int width, int screenWidth) {
+        BigDecimal divide = BigDecimal.valueOf(screenWidth).divide(BigDecimal.valueOf(Constans.BaseScreenWidth), 2, RoundingMode.HALF_UP);
+        Log.w(TAG, "标准宽度:" + divide.intValue() * width);
+        return divide.intValue() * width;
+    }
+
+    public static int getFormatHeight(int height, int screenHeight) {
+        BigDecimal divide = BigDecimal.valueOf(screenHeight).divide(BigDecimal.valueOf(Constans.BaseScreenHeight), 2, RoundingMode.HALF_UP);
+        Log.w(TAG, "标准宽度:" + divide.intValue() * height);
+        return divide.intValue() * height;
     }
 }

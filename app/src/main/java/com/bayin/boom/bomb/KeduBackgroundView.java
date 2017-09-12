@@ -24,7 +24,7 @@ public class KeduBackgroundView extends View {
     private Bitmap mBitmapLight;
     private Paint mPaint;
     private float degreeUnit = 15f;
-    private int mRadius = 100;
+    private int mRadius;
     private int mScreenHeight;
     private int mScreenWidth;
     private int mLeft;
@@ -69,8 +69,8 @@ public class KeduBackgroundView extends View {
         canvas.save();
         for (int i = 0; i < 24; i++) {
             mPaint.setAlpha(getAlpha(i));
-            canvas.drawBitmap(mBitmapLight, mViewWidth / 2-mBitmapLight.getWidth()/2, 8, mPaint);
-            canvas.drawBitmap(mBitmapDark, mViewWidth / 2-mBitmapLight.getWidth()/2, 8, mPaint);
+            canvas.drawBitmap(mBitmapLight, mViewWidth / 2-mBitmapLight.getWidth()/2, ScreenUtils.getFormatWidth(20,mScreenWidth), mPaint);
+            canvas.drawBitmap(mBitmapDark, mViewWidth / 2-mBitmapLight.getWidth()/2, ScreenUtils.getFormatWidth(20,mScreenWidth), mPaint);
             canvas.rotate(degreeUnit, mViewWidth / 2, mViewWidth / 2);
         }
         canvas.restore();
