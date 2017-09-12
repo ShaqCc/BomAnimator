@@ -39,14 +39,17 @@ public class ScreenUtils {
     }
 
     public static int getFormatWidth(int width, int screenWidth) {
-        BigDecimal divide = BigDecimal.valueOf(screenWidth).divide(BigDecimal.valueOf(Constans.BaseScreenWidth), 2, RoundingMode.HALF_UP);
-        Log.w(TAG, "标准宽度:" + divide.intValue() * width);
-        return divide.intValue() * width;
+        BigDecimal divide = BigDecimal.valueOf(screenWidth).divide(BigDecimal.valueOf(Constans.BaseScreenWidth), 10, RoundingMode.HALF_UP);
+        double v = divide.doubleValue() * width;
+        Log.w(TAG, "标准宽度:" + v);
+        return (int) v;
     }
 
     public static int getFormatHeight(int height, int screenHeight) {
-        BigDecimal divide = BigDecimal.valueOf(screenHeight).divide(BigDecimal.valueOf(Constans.BaseScreenHeight), 2, RoundingMode.HALF_UP);
-        Log.w(TAG, "标准宽度:" + divide.intValue() * height);
-        return divide.intValue() * height;
+        BigDecimal divide = BigDecimal.valueOf(screenHeight).divide(BigDecimal.valueOf(Constans.BaseScreenHeight), 10, RoundingMode.HALF_UP);
+        double v = divide.doubleValue() * height;
+        Log.w(TAG, "标准宽度:" + v);
+
+        return (int) v;
     }
 }

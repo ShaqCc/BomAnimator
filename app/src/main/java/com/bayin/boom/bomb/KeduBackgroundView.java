@@ -32,7 +32,7 @@ public class KeduBackgroundView extends View {
     private int mTop;
     private int mViewWidth;
 
-    public KeduBackgroundView(Context context,int radius){
+    public KeduBackgroundView(Context context, int radius) {
         this(context);
         this.mRadius = radius;
     }
@@ -49,7 +49,7 @@ public class KeduBackgroundView extends View {
         super(context, attrs, defStyleAttr);
         mScreenHeight = ScreenUtils.getScreenHeight(context);
         mScreenWidth = ScreenUtils.getScreenWidth(context);
-        mRadius = (int) (mScreenWidth*0.15);
+        mRadius = (int) (mScreenWidth * 0.15);
 
         mBitmapLight = BitmapFactory.decodeResource(getResources(), R.mipmap.kedu_2x_light);
         mBitmapDark = BitmapFactory.decodeResource(getResources(), R.mipmap.kedu_2x_dark);
@@ -59,7 +59,7 @@ public class KeduBackgroundView extends View {
         mPaint = new Paint();
 
         //计算view的宽度
-        mViewWidth = (mBitmapLight.getWidth() + mRadius)*2;
+        mViewWidth = (mBitmapLight.getWidth() + mRadius) * 2;
 
     }
 
@@ -69,8 +69,10 @@ public class KeduBackgroundView extends View {
         canvas.save();
         for (int i = 0; i < 24; i++) {
             mPaint.setAlpha(getAlpha(i));
-            canvas.drawBitmap(mBitmapLight, mViewWidth / 2-mBitmapLight.getWidth()/2, ScreenUtils.getFormatWidth(20,mScreenWidth), mPaint);
-            canvas.drawBitmap(mBitmapDark, mViewWidth / 2-mBitmapLight.getWidth()/2, ScreenUtils.getFormatWidth(20,mScreenWidth), mPaint);
+            if (i < 13)
+                canvas.drawBitmap(mBitmapLight, mViewWidth / 2 - mBitmapLight.getWidth() / 2, ScreenUtils.getFormatWidth(30, mScreenWidth), mPaint);
+            else
+                canvas.drawBitmap(mBitmapDark, mViewWidth / 2 - mBitmapLight.getWidth() / 2, ScreenUtils.getFormatWidth(30, mScreenWidth), mPaint);
             canvas.rotate(degreeUnit, mViewWidth / 2, mViewWidth / 2);
         }
         canvas.restore();
@@ -84,15 +86,15 @@ public class KeduBackgroundView extends View {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mViewWidth,mViewWidth);
+        setMeasuredDimension(mViewWidth, mViewWidth);
     }
 
-    public void setRadius(int radius){
+    public void setRadius(int radius) {
         this.mRadius = radius;
         invalidate();
     }
 
-    public int getRadius(){
+    public int getRadius() {
         return mRadius;
     }
 }

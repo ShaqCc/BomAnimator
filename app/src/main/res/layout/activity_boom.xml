@@ -19,8 +19,16 @@
           <!--android:layout_width="wrap_content"-->
           <!--android:layout_height="wrap_content"/>-->
         <com.bayin.boom.bomb.BombLayout
+            android:id="@+id/bomb_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"/>
+
+        <Button
+            android:id="@+id/bt_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="play"
+            android:layout_alignParentBottom="true"/>
     </RelativeLayout>
 </LinearLayout>

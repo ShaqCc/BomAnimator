@@ -47,4 +47,12 @@ public class TimeView extends FrameLayout {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         setMeasuredDimension(mKeduview.getRadius()*2,mKeduview.getRadius()*2);
     }
+
+    public ImageView getNumImageView(){
+        return mIvNumber;
+    }
+
+    public KeduBackgroundView getmKeduview(){
+        return mKeduview;
+    }
 }

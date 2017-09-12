@@ -1,18 +1,28 @@
 package com.bayin.boom.bomb;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.media.ThumbnailUtils;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.ViewPropertyAnimator;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.bayin.boom.R;
 import com.bayin.boom.ScreenUtils;
@@ -26,14 +36,42 @@ import com.bayin.boom.ScreenUtils;
 public class BombLayout extends FrameLayout {
 
     private static final String TAG = "BombLayout";
+    private static final int CHANGE = 1;//更换数字
+    private static final int TIMEOVER = 0;//时间到
+    private int overtime = 2;
+
     private Bitmap mBitmapBomb;
     private int mMBombTop;
     private int mBombLeft;
-    private ImageView mImageBomb;
     private TimeView mTimeView;
     private int mScreenWidth;
     private int mScreenHeight;
     private int offset;//刻度的偏移量
+    private int[] numberRes = {R.mipmap.time_01_2x, R.mipmap.time_02_2x, R.mipmap.time_03_2x};
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what) {
+                case CHANGE:
+                    overtime--;
+                    mTimeView.getNumImageView().setImageResource(numberRes[overtime]);
+                    if (overtime == 0)
+                        sendEmptyMessageDelayed(TIMEOVER,1000);
+                    break;
+                case TIMEOVER:
+                    overtime = 2;
+                    mTimeView.getNumImageView().setImageResource(numberRes[overtime]);
+                    Toast.makeText(getContext(), "开奖！", Toast.LENGTH_LONG).show();
+                    break;
+            }
+        }
+    };
+    //    private ViewPropertyAnimator rotation;
+//    private ViewPropertyAnimator alpha;
+    private ObjectAnimator objRotation;
+    private ObjectAnimator objAlpha;
 
     public BombLayout(@NonNull Context context) {
         this(context, null);
@@ -46,23 +84,13 @@ public class BombLayout extends FrameLayout {
     public BombLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
-
         //屏幕尺寸
         mScreenWidth = ScreenUtils.getScreenWidth(context);
         mScreenHeight = ScreenUtils.getScreenHeight(context);
-
-
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;
-
-        mBitmapBomb = BitmapFactory.decodeResource(getResources(), R.mipmap.bomb,options);
-        if (options.outWidth<mScreenWidth){
-            options.inSampleSize = options.outWidth/mScreenWidth;
-        }
-        options.inJustDecodeBounds = false;
-        mBitmapBomb = BitmapFactory.decodeResource(getResources(),R.mipmap.bomb,options);
+        //获取炸弹图片
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.bomb);
+        mBitmapBomb = ThumbnailUtils.extractThumbnail(bitmap, mScreenWidth, mScreenWidth);
         mPaint = new Paint();
-
         //炸弹的范围
         mMBombTop = (mScreenHeight - mBitmapBomb.getHeight()) / 2;
         if (mScreenWidth > mBitmapBomb.getWidth()) {
@@ -70,11 +98,59 @@ public class BombLayout extends FrameLayout {
         } else mBombLeft = 0;
 
         //设置偏移量
-        offset = ScreenUtils.getFormatWidth(13, mScreenWidth);
-
+        offset = ScreenUtils.getFormatWidth(22, mScreenWidth);
         //添加刻度view
         mTimeView = new TimeView(context);
         addView(mTimeView);
+    }
+
+    public void startTimeCount() {
+        if (objRotation == null || objAlpha == null)
+            initAnim();
+        objRotation.start();
+        objAlpha.start();
+    }
+
+    private void initAnim() {
+        //刻度旋转动画
+//        rotation = mTimeView.getmKeduview().animate().rotationBy(360);
+//        rotation.setDuration(1000);
+//        rotation.setInterpolator(new LinearInterpolator());
+
+        objRotation = ObjectAnimator.ofFloat(mTimeView.getmKeduview(), "rotation", 0, 360);
+        objRotation.setDuration(1000);
+        objRotation.setRepeatCount(2);
+        objRotation.setRepeatMode(ValueAnimator.RESTART);
+        objRotation.setInterpolator(new LinearInterpolator());
+
+        //数字动画
+        objAlpha = ObjectAnimator.ofFloat(mTimeView.getNumImageView(), "alpha", 1f, 0f);
+        objAlpha.setDuration(1000);
+        objAlpha.setRepeatCount(2);
+        objAlpha.setRepeatMode(ValueAnimator.RESTART);
+        objAlpha.setInterpolator(new DecelerateInterpolator());
+
+        objAlpha.addListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mTimeView.getNumImageView().setAlpha(1f);
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+                mHandler.sendEmptyMessage(CHANGE);
+            }
+        });
     }
 
     private Paint mPaint;
@@ -91,17 +167,12 @@ public class BombLayout extends FrameLayout {
         setMeasuredDimension(mScreenWidth, mScreenHeight);
     }
 
-    /*
-        刻度盘位置：left：37.1%，top：33.3%
-         */
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        int timeLeft = (int) (mScreenWidth * 0.35)+offset;
-        int timeTop = (int) (mScreenHeight * 0.33)+offset;
-//        Log.i(TAG, "时间板范围：" + timeLeft + "  " + timeTop + "   " + (timeLeft + mTimeView.getMeasuredWidth()) + "   " + (timeTop + mTimeView.getMeasuredHeight()));
+        int timeLeft = (int) (mScreenWidth * 0.35);
+        int timeTop = (int) (mScreenHeight * 0.33) + offset;
         Log.i(TAG, "时间板范围：" + timeLeft + "  " + timeTop + "   " + right + "   " + bottom);
-        mTimeView.layout(timeLeft, timeTop, right, timeTop +bottom);
-
+        mTimeView.layout(timeLeft, timeTop, right, timeTop + bottom);
     }
 }
