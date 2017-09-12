@@ -41,6 +41,7 @@ public class RightAnimalPanView extends View {
             R.mipmap.animal_font_10, R.mipmap.animal_font_11};
     private int mAnimalTop;
     private int mAnimalLeft;
+    private Context mCtx;
 
     public RightAnimalPanView(Context context) {
         this(context, null);
@@ -52,6 +53,7 @@ public class RightAnimalPanView extends View {
 
     public RightAnimalPanView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mCtx = context;
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = wm.getDefaultDisplay();
         screenWidth = display.getWidth();
@@ -88,17 +90,14 @@ public class RightAnimalPanView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.save();
+        int statusBarHeight = ScreenUtils.getStatusBarHeight(getContext());
+        canvas.translate(0,-statusBarHeight/2);
         //draw 背景
         canvas.drawBitmap(mBitmapRight, mLeft, mTop, mPaint);
         //draw 文字
         drawNormalText(canvas);
-
-//        if (isPlaying) {
-//
-//        } else {
-//            drawNormalText(canvas);
-//        }
-
+        canvas.restore();
     }
 
     private float degreeUnit = 30;
@@ -153,7 +152,7 @@ public class RightAnimalPanView extends View {
                     break;
                 case 2:
                     //开门
-                    if (listener != null){
+                    if (listener != null) {
                         stop();
                         listener.onAnimationEnd();
                     }

@@ -42,11 +42,16 @@
         android:layout_height="match_parent"
         android:layout_gravity="left"/>
 
-    <com.bayin.boom.CenterAnimalView
-        android:id="@+id/centerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="center"/>
+    <!--<com.bayin.boom.CenterAnimalView-->
+        <!--android:id="@+id/centerView"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_gravity="center"/>-->
+    <com.bayin.boom.AnimalViewPager
+        android:id="@+id/animalPager"
+        android:layout_gravity="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <com.bayin.boom.RightAnimalPanView
         android:id="@+id/rightView"

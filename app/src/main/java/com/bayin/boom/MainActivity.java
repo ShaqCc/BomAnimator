@@ -16,7 +16,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int BREAK = -1;//handler 终止跑马灯tag，开大门
 
 
-    private AnimalPanView animalView;
     private View imgLeftDoor;
     private View imgRightDoor;
     private LeftAnimalPanView leftPan;
@@ -24,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isOpen = false;
     private int width;
     private BallTextView tvBallText;
-    private long overtime = 4000;//跑马灯计时
+    private long overtime = 3000;//跑马灯计时
     private MyCount myCount;
     private boolean marqueenEnd = false;
 
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                     leftAnimator.end();
                     myCount.cancel();
                     myCount = null;
+                    //终止轮播
+                    mAnimalPager.stopLoop();
                     //开大门
                     openDoor();
                     break;
@@ -51,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     };
     private ObjectAnimator rightAnimator;
     private ObjectAnimator leftAnimator;
+    private AnimalViewPager mAnimalPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,26 +62,34 @@ public class MainActivity extends AppCompatActivity {
         WindowManager wm = (WindowManager) getSystemService(WINDOW_SERVICE);
         width = wm.getDefaultDisplay().getWidth();
 
+        //幕后球字
         tvBallText = (BallTextView) findViewById(R.id.tv_result);
 
+        //左边的门
         imgLeftDoor = findViewById(R.id.img_left_door);
+        //左边轮盘
         leftPan = (LeftAnimalPanView) findViewById(R.id.leftView);
 
+        //右边门
         imgRightDoor = findViewById(R.id.img_right_door);
+        //右边轮盘
         rightPan = (RightAnimalPanView) findViewById(R.id.rightView);
-        rightPan.setOnAnimationEndListener(new OnAnimationEndListener() {
-            @Override
-            public void onAnimationEnd() {
-                leftPan.startAnimation();
-            }
-        });
-        leftPan.setOnAnimationEndListener(new OnAnimationEndListener() {
-            @Override
-            public void onAnimationEnd() {
-                rightPan.startAnimation();
-            }
-        });
+        //中间的动物
+        mAnimalPager = (AnimalViewPager) findViewById(R.id.animalPager);
+//        rightPan.setOnAnimationEndListener(new OnAnimationEndListener() {
+//            @Override
+//            public void onAnimationEnd() {
+//                leftPan.startAnimation();
+//            }
+//        });
+//        leftPan.setOnAnimationEndListener(new OnAnimationEndListener() {
+//            @Override
+//            public void onAnimationEnd() {
+//                rightPan.startAnimation();
+//            }
+//        });
 
+        //跑马灯动画
         initAnimation();
 
         findViewById(R.id.bt_play).setOnClickListener(new View.OnClickListener() {
@@ -94,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     //跑马灯
                     marqueenEnd = false;
                     rightAnimator.start();
+                    mAnimalPager.startLoop();
                 }
                 isOpen = !isOpen;
             }
@@ -162,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
     private void openDoor() {
         imgLeftDoor.animate().translationX(-width / 2).setDuration(2000);
         leftPan.animate().translationX(-width / 2).setDuration(2000);
+        mAnimalPager.animate().translationX(-width / 2).setDuration(2000);
         imgRightDoor.animate().translationX(width / 2).setDuration(2000);
         rightPan.animate().translationX(width / 2).setDuration(2000);
         tvBallText.setBallText(RandomUtils.getRandom(100));
@@ -171,6 +183,7 @@ public class MainActivity extends AppCompatActivity {
         //关门
         imgLeftDoor.animate().translationX(0).setDuration(200);
         leftPan.animate().translationX(0).setDuration(200);
+        mAnimalPager.animate().translationX(0).setDuration(200);
         imgRightDoor.animate().translationX(0).setDuration(200);
         rightPan.animate().translationX(0).setDuration(200);
     }

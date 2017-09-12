@@ -85,17 +85,15 @@ public class LeftAnimalPanView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        canvas.save();
+        int statusBarHeight = ScreenUtils.getStatusBarHeight(getContext());
+        Log.i(TAG, "状态栏高度:" + statusBarHeight);
+        canvas.translate(0, -statusBarHeight/2);
         //draw 背景
         canvas.drawBitmap(mBitmapLeft, mLeft, mTop, mPaint);
         //draw 文字
         drawNormalText(canvas);
-
-//        if (isPlaying) {
-//
-//        } else {
-//            drawNormalText(canvas);
-//        }
-
+        canvas.restore();
     }
 
     private float degreeUnit = -30;
@@ -128,6 +126,7 @@ public class LeftAnimalPanView extends View {
     }
 
     private OnAnimationEndListener listener;
+
     public void setOnAnimationEndListener(OnAnimationEndListener l) {
         this.listener = l;
     }
@@ -149,7 +148,7 @@ public class LeftAnimalPanView extends View {
                     break;
                 case 2:
                     //开门
-                    if (listener != null){
+                    if (listener != null) {
                         stop();
                         listener.onAnimationEnd();
                     }
@@ -162,8 +161,8 @@ public class LeftAnimalPanView extends View {
         handler.sendEmptyMessage(1);
     }
 
-    public void stop(){
-        index=6;
+    public void stop() {
+        index = 6;
         invalidate();
     }
 }

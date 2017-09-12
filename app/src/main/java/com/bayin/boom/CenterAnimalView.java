@@ -3,6 +3,7 @@ package com.bayin.boom;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.support.annotation.Nullable;
@@ -72,6 +73,7 @@ public class CenterAnimalView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
         canvas.drawBitmap(bitmapList.get(0), left, top, paint);
     }
 }
