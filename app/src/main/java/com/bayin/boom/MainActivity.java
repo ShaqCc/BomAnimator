@@ -1,7 +1,9 @@
 package com.bayin.boom;
 
 import android.animation.Animator;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
@@ -9,7 +11,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 
 import com.bayin.boom.animal.AnimalViewPager;
 import com.bayin.boom.animal.BallTextView;
@@ -19,6 +25,7 @@ import com.bayin.boom.animal.RightAnimalPanView;
 public class MainActivity extends AppCompatActivity {
 
     private static final int BREAK = -1;//handler 终止跑马灯tag，开大门
+    private static final int TEXTBALL = 2;//开奖球开始弹
 
 
     private View imgLeftDoor;
@@ -28,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean isOpen = false;
     private int width;
     private BallTextView tvBallText;
-    private long overtime = 3000;//跑马灯计时
+    private long overtime = 2000;//跑马灯计时
     private MyCount myCount;
     private boolean marqueenEnd = false;
 
@@ -40,8 +47,6 @@ public class MainActivity extends AppCompatActivity {
             switch (msg.what) {
                 case BREAK:
                     //终止跑马灯
-//                    leftPan.stop();
-//                    rightPan.stop();
                     marqueenEnd = true;
                     rightAnimator.end();
                     leftAnimator.end();
@@ -51,6 +56,15 @@ public class MainActivity extends AppCompatActivity {
                     mAnimalPager.stopLoop();
                     //开大门
                     openDoor();
+                    break;
+                case TEXTBALL:
+                    ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 1.05f, 1f, 0.95f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,1f);
+                    scaleAnimation.setDuration(500);
+                    scaleAnimation.setFillAfter(true);
+                    scaleAnimation.setInterpolator(new AccelerateInterpolator());
+                    scaleAnimation.setRepeatCount(7);
+                    scaleAnimation.setRepeatMode(Animation.REVERSE);
+                    tvBallText.startAnimation(scaleAnimation);
                     break;
             }
         }
@@ -81,18 +95,6 @@ public class MainActivity extends AppCompatActivity {
         rightPan = (RightAnimalPanView) findViewById(R.id.rightView);
         //中间的动物
         mAnimalPager = (AnimalViewPager) findViewById(R.id.animalPager);
-//        rightPan.setOnAnimationEndListener(new OnAnimationEndListener() {
-//            @Override
-//            public void onAnimationEnd() {
-//                leftPan.startAnimation();
-//            }
-//        });
-//        leftPan.setOnAnimationEndListener(new OnAnimationEndListener() {
-//            @Override
-//            public void onAnimationEnd() {
-//                rightPan.startAnimation();
-//            }
-//        });
 
         //跑马灯动画
         initAnimation();
@@ -182,6 +184,7 @@ public class MainActivity extends AppCompatActivity {
         imgRightDoor.animate().translationX(width / 2).setDuration(2000);
         rightPan.animate().translationX(width / 2).setDuration(2000);
         tvBallText.setBallText(RandomUtils.getRandom(100));
+        mHandler.sendEmptyMessageDelayed(TEXTBALL, 700);
     }
 
     private void closeDoor() {

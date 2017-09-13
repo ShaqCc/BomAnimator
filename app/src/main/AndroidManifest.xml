@@ -21,7 +21,11 @@
             android:name=".MainActivity"
             android:launchMode="singleTask"/>
 
-        <activity android:name=".BoomActivity"
+        <activity
+            android:name=".BoomActivity"
+            android:launchMode="singleTask"/>
+        <activity
+            android:name=".BallActivity"
             android:launchMode="singleTask"/>
     </application>
 

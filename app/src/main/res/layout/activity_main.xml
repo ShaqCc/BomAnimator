@@ -7,11 +7,22 @@
     android:layout_height="match_parent"
     tools:context="com.bayin.boom.MainActivity">
 
-    <com.bayin.boom.animal.BallTextView
-        android:id="@+id/tv_result"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center">
+        <ImageView
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/out_light"/>
+        <com.bayin.boom.animal.BallTextView
+            android:id="@+id/tv_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"/>
+    </FrameLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -50,8 +61,8 @@
     <com.bayin.boom.animal.AnimalViewPager
         android:id="@+id/animalPager"
         android:layout_gravity="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_width="80dp"
+        android:layout_height="100dp"/>
 
     <com.bayin.boom.animal.RightAnimalPanView
         android:id="@+id/rightView"

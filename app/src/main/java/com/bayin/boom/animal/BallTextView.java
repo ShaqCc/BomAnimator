@@ -15,7 +15,7 @@ import com.bayin.boom.R;
  */
 
 public class BallTextView extends android.support.v7.widget.AppCompatTextView {
-    private int[] arrBg = {R.mipmap.ball_blue,R.mipmap.ball_green,R.mipmap.ball_red};
+    private int[] arrBg = {R.mipmap.blue_litter,R.mipmap.green_little,R.mipmap.red_little};
 
     public BallTextView(Context context) {
         this(context,null);
@@ -28,7 +28,7 @@ public class BallTextView extends android.support.v7.widget.AppCompatTextView {
     public BallTextView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setTextColor(Color.WHITE);
-        setTextSize(50);
+        setTextSize(40);
         setGravity(Gravity.CENTER);
     }
 

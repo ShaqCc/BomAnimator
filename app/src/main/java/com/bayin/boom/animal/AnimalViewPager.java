@@ -7,16 +7,25 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.Interpolator;
+import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Scroller;
 
 import com.bayin.boom.R;
+
+import java.lang.reflect.Field;
 
 /****************************************
  * 功能说明:  
@@ -46,7 +55,7 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
                 case START:
                     if (!shouldStop) {
                         setCurrentItem(++currentPosition, true);
-                        mHandler.sendEmptyMessageDelayed(START, 100);
+                        mHandler.sendEmptyMessageDelayed(START, 200);
                     } else return;
                     break;
                 case STOP:
@@ -68,6 +77,7 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
         mWidth = bitmap.getWidth();
         mHeight = bitmap.getHeight();
         setAdapter(new MyAdapter());
+        changeViewPageScroller();
     }
 
     private boolean shouldStop = false;
@@ -95,6 +105,7 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
         }
     }
 
+
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         super.onPageScrolled(position, positionOffset, positionOffsetPixels);
@@ -111,11 +122,11 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
         return true;
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mWidth, mHeight);
-    }
+//    @Override
+//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+//        setMeasuredDimension(mWidth, mHeight);
+//    }
 
     private static class MyAdapter extends PagerAdapter {
 
@@ -136,14 +147,63 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-            View inflate = LayoutInflater.from(container.getContext()).inflate(R.layout.item_imageview, container, false);
+            LinearLayout inflate = (LinearLayout) LayoutInflater.from(container.getContext()).inflate(R.layout.item_imageview, container, false);
             ImageView image = (ImageView) inflate.findViewById(R.id.imageview);
 //            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) image.getLayoutParams();
 //            layoutParams.setMargins(0, ScreenUtils.getStatusBarHeight(container.getContext()), 0, 0);
 //            image.setLayoutParams(layoutParams);
+
             image.setImageResource(drawableRes[position % drawableRes.length]);
             container.addView(inflate);
             return inflate;
         }
     }
+
+    private void changeViewPageScroller() {
+        try {
+            Field mField = ViewPager.class.getDeclaredField("mScroller");
+            mField.setAccessible(true);
+            FixedSpeedScroller scroller;
+            scroller = new FixedSpeedScroller(getContext(),new LinearInterpolator());
+            mField.set(this, scroller);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    class FixedSpeedScroller extends Scroller {
+        private int mDuration = 200;
+
+        public FixedSpeedScroller(Context context) {
+            super(context);
+        }
+
+        public FixedSpeedScroller(Context context, Interpolator interpolator) {
+            super(context, interpolator);
+        }
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy,
+                                int duration) {
+            // Ignore received duration, use fixed one instead
+            super.startScroll(startX, startY, dx, dy, mDuration);
+        }
+
+        @Override
+        public void startScroll(int startX, int startY, int dx, int dy) {
+            // Ignore received duration, use fixed one instead
+            super.startScroll(startX, startY, dx, dy, mDuration);
+        }
+
+        public void setmDuration(int time) {
+            mDuration = time;
+        }
+
+        public int getmDuration() {
+            return mDuration;
+        }
+
+    };
 }

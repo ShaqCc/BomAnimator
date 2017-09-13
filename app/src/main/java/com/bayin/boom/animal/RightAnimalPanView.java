@@ -113,7 +113,7 @@ public class RightAnimalPanView extends View {
                 mAnimalPaint.setAlpha(255);
                 canvas.drawBitmap(mBitmapList.get(i), mAnimalLeft, mAnimalTop, mAnimalPaint);
             } else {
-                mAnimalPaint.setAlpha(125);
+                mAnimalPaint.setAlpha(80);
                 canvas.drawBitmap(mBitmapList.get(i), mAnimalLeft, mAnimalTop, mAnimalPaint);
             }
 

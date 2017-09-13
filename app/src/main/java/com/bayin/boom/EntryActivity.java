@@ -34,5 +34,14 @@ public class EntryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.ball).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(EntryActivity.this,BallActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
