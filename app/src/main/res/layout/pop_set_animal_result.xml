@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_black_corner_bg"
+    android:orientation="vertical"
+    android:paddingBottom="20dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:id="@+id/iv_shu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/image_margin"
+            android:src="@mipmap/shuxaing_shu" />
+
+        <ImageView
+            android:id="@+id/iv_niu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/image_margin"
+            android:src="@mipmap/shuxaing_niu" />
+
+        <ImageView
+            android:id="@+id/iv_hu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/image_margin"
+            android:src="@mipmap/shuxaing_hu" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:id="@+id/iv_tu"
+            style="@style/image_margin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/shuxaing_tu" />
+
+
+        <ImageView
+            android:id="@+id/iv_long"
+            style="@style/image_margin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/shuxaing_long" />
+
+        <ImageView
+            android:id="@+id/iv_she"
+            style="@style/image_margin"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/shuxaing_she" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+
+        <ImageView
+            android:id="@+id/iv_ma"
+            android:layout_width="0dp"
+            style="@style/image_margin"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/shuxaing_ma" />
+
+        <ImageView
+            android:id="@+id/iv_yang"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            style="@style/image_margin"
+            android:src="@mipmap/shuxaing_yang" />
+
+        <ImageView
+            android:id="@+id/iv_hou"
+            android:layout_width="0dp"
+            style="@style/image_margin"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/shuxaing_hou" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:id="@+id/iv_ji"
+            android:layout_width="0dp"
+            style="@style/image_margin"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/shuxaing_ji" />
+
+        <ImageView
+            android:id="@+id/iv_gou"
+            android:layout_width="0dp"
+            style="@style/image_margin"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/shuxaing_dog" />
+
+        <ImageView
+            android:id="@+id/iv_zhu"
+            android:layout_width="0dp"
+            style="@style/image_margin"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@mipmap/shuxaing_zhu" />
+    </LinearLayout>
+</LinearLayout>

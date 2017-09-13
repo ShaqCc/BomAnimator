@@ -33,12 +33,19 @@ import java.lang.reflect.Field;
  * Author: Created by bayin on 2017/9/12.
  ****************************************/
 
-public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChangeListener {
+public class AnimalViewPager extends ViewPager {
 
     private static final int START = 1;
     private static final int STOP = 0;
-    private int currentPosition;
-    private static int[] drawableRes = {R.mipmap.shuxaing_shu, R.mipmap.shuxaing_niu,
+    private static final int SET_RESULT = 666;
+    private int currentPosition = 0;
+    private final int[] fDrawableRes = {R.mipmap.shuxaing_shu, R.mipmap.shuxaing_niu,
+            R.mipmap.shuxaing_hu, R.mipmap.shuxaing_tu,
+            R.mipmap.shuxaing_long, R.mipmap.shuxaing_she,
+            R.mipmap.shuxaing_ma, R.mipmap.shuxaing_yang,
+            R.mipmap.shuxaing_hou, R.mipmap.shuxaing_ji,
+            R.mipmap.shuxaing_dog, R.mipmap.shuxaing_zhu};
+    private int[] drawableRes = {R.mipmap.shuxaing_shu, R.mipmap.shuxaing_niu,
             R.mipmap.shuxaing_hu, R.mipmap.shuxaing_tu,
             R.mipmap.shuxaing_long, R.mipmap.shuxaing_she,
             R.mipmap.shuxaing_ma, R.mipmap.shuxaing_yang,
@@ -46,6 +53,7 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
             R.mipmap.shuxaing_dog, R.mipmap.shuxaing_zhu};
     private int mWidth;
     private int mHeight;
+    private boolean isSetResult = false;
 
     private Handler mHandler = new Handler() {
         @Override
@@ -61,9 +69,17 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
                 case STOP:
 
                     break;
+                case SET_RESULT:
+                    isSetResult = true;
+                    currentPosition = currentPosition+2;
+                    Log.w("xxx", "currentPosition=" + currentPosition + "   getCurrentItem=" + getCurrentItem());
+                    drawableRes[currentPosition% 12] = fDrawableRes[mEndAnimal];
+                    setCurrentItem(currentPosition,false);
+                    break;
             }
         }
     };
+    private MyAdapter adapter;
 
 
     public AnimalViewPager(Context context) {
@@ -76,8 +92,10 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.shuxaing_dog);
         mWidth = bitmap.getWidth();
         mHeight = bitmap.getHeight();
-        setAdapter(new MyAdapter());
+        adapter = new MyAdapter();
+        setAdapter(adapter);
         changeViewPageScroller();
+        setOffscreenPageLimit(0);
     }
 
     private boolean shouldStop = false;
@@ -92,29 +110,32 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
 
     public void stopLoop() {
         shouldStop = true;
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int state) {
-        if (state == ViewPager.SCROLL_STATE_IDLE) {
-            if (currentPosition == getAdapter().getCount() - 1) {
-                setCurrentItem(1, false);
-            } else if (currentPosition == 0) {
-                setCurrentItem(getAdapter().getCount() - 2, false);
-            }
+        if (mEndAnimal >= 0) {
+            mHandler.sendEmptyMessage(SET_RESULT);
         }
     }
 
+//    @Override
+//    public void onPageScrollStateChanged(int state) {
+////        if (state == ViewPager.SCROLL_STATE_IDLE) {
+//            if (currentPosition == getAdapter().getCount() - 1) {
+//                setCurrentItem(0, false);
+//            } else if (currentPosition == 0) {
+//                setCurrentItem(getAdapter().getCount() - 2, false);
+//            }
+////        }
+//    }
 
-    @Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-        super.onPageScrolled(position, positionOffset, positionOffsetPixels);
-    }
 
-    @Override
-    public void onPageSelected(int position) {
-        currentPosition = position;
-    }
+//    @Override
+//    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//        super.onPageScrolled(position,positionOffset,positionOffsetPixels);
+//    }
+
+//    @Override
+//    public void onPageSelected(int position) {
+//        currentPosition = position;
+//    }
 
 
     @Override
@@ -122,13 +143,8 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
         return true;
     }
 
-//    @Override
-//    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-//        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        setMeasuredDimension(mWidth, mHeight);
-//    }
 
-    private static class MyAdapter extends PagerAdapter {
+    private class MyAdapter extends PagerAdapter {
 
         @Override
         public int getCount() {
@@ -149,10 +165,8 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
         public Object instantiateItem(ViewGroup container, int position) {
             LinearLayout inflate = (LinearLayout) LayoutInflater.from(container.getContext()).inflate(R.layout.item_imageview, container, false);
             ImageView image = (ImageView) inflate.findViewById(R.id.imageview);
-//            FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) image.getLayoutParams();
-//            layoutParams.setMargins(0, ScreenUtils.getStatusBarHeight(container.getContext()), 0, 0);
-//            image.setLayoutParams(layoutParams);
-
+            if (isSetResult)
+                Log.w("xxx", "instantiateItem position：" + position);
             image.setImageResource(drawableRes[position % drawableRes.length]);
             container.addView(inflate);
             return inflate;
@@ -164,7 +178,7 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
             Field mField = ViewPager.class.getDeclaredField("mScroller");
             mField.setAccessible(true);
             FixedSpeedScroller scroller;
-            scroller = new FixedSpeedScroller(getContext(),new LinearInterpolator());
+            scroller = new FixedSpeedScroller(getContext(), new LinearInterpolator());
             mField.set(this, scroller);
         } catch (Exception e) {
             e.printStackTrace();
@@ -173,7 +187,7 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
     }
 
 
-    class FixedSpeedScroller extends Scroller {
+    private class FixedSpeedScroller extends Scroller {
         private int mDuration = 200;
 
         public FixedSpeedScroller(Context context) {
@@ -205,5 +219,19 @@ public class AnimalViewPager extends ViewPager implements ViewPager.OnPageChange
             return mDuration;
         }
 
-    };
+    }
+
+    private int mEndAnimal = -1;
+
+    public void setEndAnimal(int index) {
+//        isSetResult = true;
+        mEndAnimal = index;
+        Log.w("xxxx", "指定的：" + index);
+    }
+
+    public void resetResult() {
+        isSetResult = false;
+        mEndAnimal = -1;
+        drawableRes = fDrawableRes;
+    }
 }
