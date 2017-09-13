@@ -113,14 +113,8 @@ public class BombLayout extends FrameLayout {
 
     private void initAnim() {
         //刻度旋转动画
-//        rotation = mTimeView.getmKeduview().animate().rotationBy(360);
-//        rotation.setDuration(1000);
-//        rotation.setInterpolator(new LinearInterpolator());
-
         objRotation = ObjectAnimator.ofFloat(mTimeView.getmKeduview(), "rotation", 0, 360);
-        objRotation.setDuration(1000);
-        objRotation.setRepeatCount(2);
-        objRotation.setRepeatMode(ValueAnimator.RESTART);
+        objRotation.setDuration(3000);
         objRotation.setInterpolator(new LinearInterpolator());
 
         //数字动画
