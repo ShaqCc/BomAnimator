@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AccelerateInterpolator;
@@ -147,6 +148,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         View inflate = LayoutInflater.from(this).inflate(R.layout.pop_set_animal_result, null, false);
+        popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setContentView(inflate);
         inflate.findViewById(R.id.iv_shu).setOnClickListener(this);
         inflate.findViewById(R.id.iv_niu).setOnClickListener(this);
