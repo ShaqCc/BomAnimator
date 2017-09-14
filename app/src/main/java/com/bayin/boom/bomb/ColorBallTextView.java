@@ -36,15 +36,14 @@ public class ColorBallTextView extends android.support.v7.widget.AppCompatTextVi
         mWidth = background.getWidth();
         mHeight = background.getHeight();
         setBackgroundResource(R.mipmap.color_ball);
-        setTextSize(50);
+        setTextSize(18);
         setGravity(Gravity.CENTER);
-        setTypeface(Typeface.DEFAULT_BOLD);
         setTextColor(Color.parseColor("#E43130"));
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mWidth,mHeight);
+//        setMeasuredDimension(mWidth,mHeight);
     }
 }

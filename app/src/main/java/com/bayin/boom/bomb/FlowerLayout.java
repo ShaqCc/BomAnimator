@@ -16,7 +16,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 
@@ -40,6 +42,7 @@ public class FlowerLayout extends FrameLayout {
     private View mCenterFire;
     private AnimatorSet mAnimatorSet;
     private List<ColorBallTextView> mBallList = new ArrayList<>();
+    private AnimationSet animationSet;
 
     public FlowerLayout(@NonNull Context context) {
         this(context, null);
@@ -57,29 +60,52 @@ public class FlowerLayout extends FrameLayout {
         mCenterFire = findViewById(R.id.center_fire);
         initAnimation();
         //开奖数字
-        int[] randomNum = RandomUtils.getRandomBall(5, 10);
+        ColorBallTextView ball_1 = (ColorBallTextView) inflate.findViewById(R.id.ball_1);
+        ColorBallTextView ball_2 = (ColorBallTextView) inflate.findViewById(R.id.ball_2);
+        ColorBallTextView ball_3 = (ColorBallTextView) inflate.findViewById(R.id.ball_3);
+        ColorBallTextView ball_4 = (ColorBallTextView) inflate.findViewById(R.id.ball_4);
+        mBallList.add(ball_1);
+        mBallList.add(ball_2);
+        mBallList.add(ball_3);
+        mBallList.add(ball_4);
+        int[] randomNum = RandomUtils.getRandomBall(4, 10);
         for (int i = 0; i < randomNum.length; i++) {
-            ColorBallTextView ballTextView = new ColorBallTextView(context);
-            ballTextView.setText("测试");
-            mBallList.add(ballTextView);
-            addView(ballTextView);
+            setScale(mBallList.get(i), 0.6f);
+            mBallList.get(i).setText(String.valueOf(randomNum[i]));
         }
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        int measuredWidth = getMeasuredWidth();
-        int measuredHeight = getMeasuredHeight();
-        Log.w(TAG,"测量宽搞:"+measuredWidth+"   "+measuredHeight);
-        for (int i = 0; i < mBallList.size(); i++) {
-            int random = RandomUtils.getRandom(measuredWidth);
-            int random2 = RandomUtils.getRandom(measuredHeight);
-            ColorBallTextView textView = mBallList.get(i);
-            textView.layout(random,random2,random+textView.getMeasuredWidth(),random2+textView.getMeasuredHeight());
-        }
     }
 
+    /**
+     * 比例缩放
+     *
+     * @param view
+     * @param scale
+     */
+    private void setScale(View view, float scale) {
+        view.setScaleX(scale);
+        view.setScaleY(scale);
+    }
+
+    /**
+     * 显示，隐藏球
+     * @param visible
+     */
+    private void setBallVisible(boolean visible){
+        if (visible){
+            for (int i = 0; i < mBallList.size(); i++) {
+                mBallList.get(i).setVisibility(VISIBLE);
+            }
+        }else {
+            for (int i = 0; i < mBallList.size(); i++) {
+                mBallList.get(i).setVisibility(GONE);
+            }
+        }
+    }
     /**
      * 初始化动画
      */
@@ -119,8 +145,24 @@ public class FlowerLayout extends FrameLayout {
         lightAlpha.setRepeatCount(6);
         lightAlpha.setRepeatMode(ValueAnimator.RESTART);
 
+        //爆炸
+        ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 3f, 1f, 3f,
+                Animation.RELATIVE_TO_SELF, 0.25f, Animation.RELATIVE_TO_SELF, 0.15f);
+        scaleAnimation.setDuration(200);
+        scaleAnimation.setInterpolator(new AccelerateInterpolator());
+        scaleAnimation.setFillAfter(true);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(1f, 0f);
+        alphaAnimation.setDuration(200);
+        alphaAnimation.setFillAfter(true);
 
-        mAnimatorSet.play(centerScaleX).with(centerScaleY).with(alphaStar).with(lightScaleX).with(lightScaleY).with(lightAlpha);
+        animationSet = new AnimationSet(false);
+        animationSet.addAnimation(scaleAnimation);
+        animationSet.addAnimation(alphaAnimation);
+
+
+        mAnimatorSet.play(centerScaleX).with(centerScaleY)
+                .with(alphaStar).with(lightScaleX)
+                .with(lightScaleY).with(lightAlpha);
 
         mAnimatorSet.addListener(new Animator.AnimatorListener() {
             @Override
@@ -132,12 +174,7 @@ public class FlowerLayout extends FrameLayout {
             public void onAnimationEnd(Animator animation) {
                 reset();
                 //开始爆炸动画
-                ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 4f, 1f, 4f,
-                        Animation.RELATIVE_TO_SELF, 0.25f, Animation.RELATIVE_TO_SELF, 0.15f);
-                scaleAnimation.setDuration(200);
-                scaleAnimation.setInterpolator(new AccelerateInterpolator());
-                scaleAnimation.setFillAfter(true);
-                startAnimation(scaleAnimation);
+                startAnimation(animationSet);
             }
 
             @Override
@@ -168,7 +205,7 @@ public class FlowerLayout extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mBgStar.getMeasuredWidth(),mBgStar.getMeasuredHeight());
+        setMeasuredDimension(mBgStar.getMeasuredWidth(), mBgStar.getMeasuredHeight());
 
     }
 

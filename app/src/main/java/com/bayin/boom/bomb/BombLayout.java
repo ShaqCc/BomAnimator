@@ -24,6 +24,8 @@ import android.widget.Toast;
 import com.bayin.boom.R;
 import com.bayin.boom.ScreenUtils;
 
+import tyrantgit.explosionfield.ExplosionField;
+
 /****************************************
  * 功能说明:  
  *
@@ -35,6 +37,7 @@ public class BombLayout extends FrameLayout {
     private static final String TAG = "BombLayout";
     private static final int CHANGE = 1;//更换数字
     private static final int TIMEOVER = 0;//时间到
+    private static final int COUNTTIME = 2;//倒计时开始变化
     private int overtime = 2;
 
     private Bitmap mBitmapBomb;
@@ -51,27 +54,26 @@ public class BombLayout extends FrameLayout {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
+                case COUNTTIME:
+                    objAlpha.start();
+                    break;
                 case CHANGE:
                     overtime--;
                     mTimeView.getNumImageView().setImageResource(numberRes[overtime]);
-                    if (overtime == 0)
-                    {
+                    if (overtime == 0){
                         sendEmptyMessageDelayed(TIMEOVER, 1000);
                     }
                     break;
                 case TIMEOVER:
                     overtime = 2;
-//                    mFlowerLayout.stop();
                     mTimeView.getNumImageView().setImageResource(numberRes[overtime]);
-                    Toast.makeText(getContext(), "开奖！", Toast.LENGTH_LONG).show();
+
                     break;
             }
         }
     };
-//    private ObjectAnimator objRotation;
     private ObjectAnimator objAlpha;
     private ObjectAnimator mProgressAnimator;
-    //    private FlowerLayout mFlowerLayout;
 
     public BombLayout(@NonNull Context context) {
         this(context, null);
@@ -109,19 +111,12 @@ public class BombLayout extends FrameLayout {
         if (mProgressAnimator == null || objAlpha == null)
             initAnim();
         mProgressAnimator.start();
-        objAlpha.start();
+        mHandler.sendEmptyMessageDelayed(COUNTTIME,1000);
     }
 
     private void initAnim() {
-        //刻度旋转动画
-//        objRotation = ObjectAnimator.ofFloat(mTimeView.getmKeduview(), "rotation", 0, 360);
-//        objRotation.setDuration(3000);
-//        objRotation.setInterpolator(new LinearInterpolator());
-
         mProgressAnimator = ObjectAnimator.ofInt(mTimeView.getmKeduview(), "progress", 0, 24);
         mProgressAnimator.setDuration(3000);
-
-
         //数字动画
         objAlpha = ObjectAnimator.ofFloat(mTimeView.getNumImageView(), "alpha", 1f, 0f);
         objAlpha.setDuration(1000);

@@ -44,24 +44,37 @@ public class ParentLayout extends FrameLayout {
     }
 
     public void startBomb() {
+
         mZhaDan.startTimeCount(2);
-        mFlowerLight.startFire(3);
-        //捻子往下走
-        TranslateAnimation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0.05f,
-                Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0.04f);
-        translateAnimation.setDuration(3000);
-        translateAnimation.setFillAfter(false);
-        mFlowerLight.startAnimation(translateAnimation);
+
+        mFlowerLight.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mFlowerLight.setVisibility(VISIBLE);
+                mFlowerLight.startFire(1);
+                //捻子往下走
+                TranslateAnimation translateAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0.05f,
+                        Animation.RELATIVE_TO_SELF, 0, Animation.RELATIVE_TO_SELF, 0.04f);
+                translateAnimation.setDuration(1000);
+                translateAnimation.setFillAfter(false);
+                mFlowerLight.startAnimation(translateAnimation);
+            }
+        }, 2000);
     }
+
+    private boolean init = false;
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+        if (!init) {
+            mFlowerLight.setVisibility(INVISIBLE);
+            init = true;
+        }
+
         //炸弹位置
         int zhadanTop = ScreenUtils.getFormatHeight(200, mScreenHeight);
         mZhaDan.layout(0, zhadanTop, right, bottom);
-
-
         //火花位置
         int flowerLeft = ScreenUtils.getFormatWidth(100, mScreenWidth);
         int flowerTop = ScreenUtils.getFormatHeight(350, mScreenHeight);

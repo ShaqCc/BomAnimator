@@ -1,25 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/bg_star"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/star_bg"/>
+        android:src="@mipmap/star_bg" />
+
     <ImageView
         android:id="@+id/flower_light"
         android:layout_width="200dp"
         android:layout_height="200dp"
-        android:src="@mipmap/flower_2x"/>
+        android:src="@mipmap/flower_2x" />
 
     <ImageView
         android:id="@+id/center_fire"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="60dp"
         android:layout_marginLeft="60dp"
-        android:src="@mipmap/center_yanhua"/>
+        android:layout_marginTop="60dp"
+        android:src="@mipmap/center_yanhua" />
 
+    <com.bayin.boom.bomb.ColorBallTextView
+        android:id="@+id/ball_1"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content" />
+
+    <com.bayin.boom.bomb.ColorBallTextView
+        android:id="@+id/ball_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="60dp"
+        android:visibility="gone"
+        android:layout_marginTop="30dp" />
+
+    <com.bayin.boom.bomb.ColorBallTextView
+        android:id="@+id/ball_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="100dp" />
+
+    <com.bayin.boom.bomb.ColorBallTextView
+        android:id="@+id/ball_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginLeft="90dp"
+        android:layout_marginTop="90dp" />
 </RelativeLayout>
