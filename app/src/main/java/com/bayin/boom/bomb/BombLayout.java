@@ -7,7 +7,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.ThumbnailUtils;
 import android.os.Handler;
@@ -17,11 +16,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.ViewPropertyAnimator;
 import android.view.animation.DecelerateInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.bayin.boom.R;
@@ -58,20 +55,23 @@ public class BombLayout extends FrameLayout {
                     overtime--;
                     mTimeView.getNumImageView().setImageResource(numberRes[overtime]);
                     if (overtime == 0)
-                        sendEmptyMessageDelayed(TIMEOVER,1000);
+                    {
+                        sendEmptyMessageDelayed(TIMEOVER, 1000);
+                    }
                     break;
                 case TIMEOVER:
                     overtime = 2;
+//                    mFlowerLayout.stop();
                     mTimeView.getNumImageView().setImageResource(numberRes[overtime]);
                     Toast.makeText(getContext(), "开奖！", Toast.LENGTH_LONG).show();
                     break;
             }
         }
     };
-    //    private ViewPropertyAnimator rotation;
-//    private ViewPropertyAnimator alpha;
-    private ObjectAnimator objRotation;
+//    private ObjectAnimator objRotation;
     private ObjectAnimator objAlpha;
+    private ObjectAnimator mProgressAnimator;
+    //    private FlowerLayout mFlowerLayout;
 
     public BombLayout(@NonNull Context context) {
         this(context, null);
@@ -104,18 +104,23 @@ public class BombLayout extends FrameLayout {
         addView(mTimeView);
     }
 
-    public void startTimeCount() {
-        if (objRotation == null || objAlpha == null)
+    public void startTimeCount(int time) {
+        overtime = time;
+        if (mProgressAnimator == null || objAlpha == null)
             initAnim();
-        objRotation.start();
+        mProgressAnimator.start();
         objAlpha.start();
     }
 
     private void initAnim() {
         //刻度旋转动画
-        objRotation = ObjectAnimator.ofFloat(mTimeView.getmKeduview(), "rotation", 0, 360);
-        objRotation.setDuration(3000);
-        objRotation.setInterpolator(new LinearInterpolator());
+//        objRotation = ObjectAnimator.ofFloat(mTimeView.getmKeduview(), "rotation", 0, 360);
+//        objRotation.setDuration(3000);
+//        objRotation.setInterpolator(new LinearInterpolator());
+
+        mProgressAnimator = ObjectAnimator.ofInt(mTimeView.getmKeduview(), "progress", 0, 24);
+        mProgressAnimator.setDuration(3000);
+
 
         //数字动画
         objAlpha = ObjectAnimator.ofFloat(mTimeView.getNumImageView(), "alpha", 1f, 0f);
@@ -167,6 +172,11 @@ public class BombLayout extends FrameLayout {
         int timeLeft = (int) (mScreenWidth * 0.35);
         int timeTop = (int) (mScreenHeight * 0.33) + offset;
         Log.i(TAG, "时间板范围：" + timeLeft + "  " + timeTop + "   " + right + "   " + bottom);
+        //设置倒计时位置
         mTimeView.layout(timeLeft, timeTop, right, timeTop + bottom);
+        //设置烟花位置
+//        int flowerLeft = ScreenUtils.getFormatWidth(100,mScreenWidth);
+//        int flowerTop = ScreenUtils.getFormatHeight(150,mScreenHeight);
+//        mFlowerLayout.layout(flowerLeft, flowerTop, right, bottom);
     }
 }

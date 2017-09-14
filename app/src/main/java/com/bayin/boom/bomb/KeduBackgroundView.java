@@ -32,11 +32,6 @@ public class KeduBackgroundView extends View {
     private int mTop;
     private int mViewWidth;
 
-    public KeduBackgroundView(Context context, int radius) {
-        this(context);
-        this.mRadius = radius;
-    }
-
     public KeduBackgroundView(Context context) {
         this(context, null);
     }
@@ -63,16 +58,30 @@ public class KeduBackgroundView extends View {
 
     }
 
+    //    private boolean isStart = false;
+    private int progress = 0;
+
+    public int getProgress() {
+        return progress;
+    }
+
+    public void setProgress(int progress) {
+        this.progress = progress;
+        invalidate();
+    }
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         canvas.save();
         for (int i = 0; i < 24; i++) {
-            mPaint.setAlpha(getAlpha(i));
-            if (i < 13)
-                canvas.drawBitmap(mBitmapLight, mViewWidth / 2 - mBitmapLight.getWidth() / 2, ScreenUtils.getFormatWidth(30, mScreenWidth), mPaint);
-            else
-                canvas.drawBitmap(mBitmapDark, mViewWidth / 2 - mBitmapLight.getWidth() / 2, ScreenUtils.getFormatWidth(30, mScreenWidth), mPaint);
+            mPaint.setAlpha(125);
+            canvas.drawBitmap(mBitmapLight, mViewWidth / 2 - mBitmapLight.getWidth() / 2, ScreenUtils.getFormatWidth(30, mScreenWidth), mPaint);
+            canvas.rotate(degreeUnit, mViewWidth / 2, mViewWidth / 2);
+        }
+        for (int i = 0; i < progress; i++) {
+            mPaint.setAlpha(255);
+            canvas.drawBitmap(mBitmapDark, mViewWidth / 2 - mBitmapLight.getWidth() / 2, ScreenUtils.getFormatWidth(30, mScreenWidth), mPaint);
             canvas.rotate(degreeUnit, mViewWidth / 2, mViewWidth / 2);
         }
         canvas.restore();

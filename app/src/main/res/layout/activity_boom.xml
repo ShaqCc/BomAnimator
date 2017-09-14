@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:background="#7F0000"
               android:layout_width="match_parent"
@@ -18,7 +18,7 @@
           <!--android:layout_marginTop="184dp"-->
           <!--android:layout_width="wrap_content"-->
           <!--android:layout_height="wrap_content"/>-->
-        <com.bayin.boom.bomb.BombLayout
+        <com.bayin.boom.bomb.ParentLayout
             android:id="@+id/bomb_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,4 +31,11 @@
             android:text="play"
             android:layout_alignParentBottom="true"/>
     </RelativeLayout>
-</LinearLayout>
+
+    <View
+        android:id="@+id/white_film"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:background="#ffffff"/>
+</FrameLayout>
