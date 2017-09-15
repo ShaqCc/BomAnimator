@@ -30,6 +30,7 @@ import tyrantgit.explosionfield.ExplosionField;
 public class BoomActivity extends AppCompatActivity {
 
     private static final int BOOM = 1;//开始爆炸
+    private static final int SHAKE = 2;//开始震动
     private ParentLayout bombLayout;
     private Animation mShakeAnim;
     private View mWhiteFilm;
@@ -50,6 +51,9 @@ public class BoomActivity extends AppCompatActivity {
                     //show window
                     showPopWindow();
                     break;
+                case SHAKE:
+                    bombLayout.startAnimation(mShakeAnim);
+                    break;
             }
         }
     };
@@ -60,6 +64,7 @@ public class BoomActivity extends AppCompatActivity {
     private ColorBallTextView ball_3;
     private ColorBallTextView ball_2;
     private ColorBallTextView ball_1;
+    private View mDecorView;
 
     private void showPopWindow() {
         if (popupWindow == null)
@@ -123,6 +128,8 @@ public class BoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boom);
 
+        mDecorView = getWindow().getDecorView();
+
         mWhiteFilm = findViewById(R.id.white_film);
 
         bombLayout = (ParentLayout) findViewById(R.id.bomb_layout);
@@ -140,6 +147,7 @@ public class BoomActivity extends AppCompatActivity {
 //        });
 
         bombLayout.startBomb();
+        mHandler.sendEmptyMessageDelayed(SHAKE,2500);
         mHandler.sendEmptyMessageDelayed(BOOM, 3200);
     }
 }

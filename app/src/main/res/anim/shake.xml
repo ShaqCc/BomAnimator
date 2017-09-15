@@ -3,76 +3,76 @@
      android:interpolator="@anim/cycle" >
 
     <translate
-        android:duration="300"
+        android:duration="200"
         android:fromXDelta="0"
         android:fromYDelta="0"
         android:toXDelta="-10"
         android:toYDelta="-10" />
     <translate
-        android:duration="300"
+        android:duration="100"
         android:fromXDelta="0"
         android:fromYDelta="0"
-        android:startOffset="300"
+        android:startOffset="200"
         android:toXDelta="10"
         android:toYDelta="-10" />
     <translate
-        android:duration="300"
+        android:duration="200"
+        android:fromXDelta="0"
+        android:fromYDelta="0"
+        android:startOffset="400"
+        android:toXDelta="-10"
+        android:toYDelta="10" />
+    <translate
+        android:duration="200"
         android:fromXDelta="0"
         android:fromYDelta="0"
         android:startOffset="600"
-        android:toXDelta="-10"
-        android:toYDelta="10" />
-    <translate
-        android:duration="300"
-        android:fromXDelta="0"
-        android:fromYDelta="0"
-        android:startOffset="900"
         android:toXDelta="10"
         android:toYDelta="10" />
 
     <translate
-        android:duration="300"
+        android:duration="200"
         android:fromXDelta="0"
         android:fromYDelta="0"
-        android:startOffset="1200"
+        android:startOffset="800"
         android:toXDelta="-10"
         android:toYDelta="10" />
 
     <translate
-        android:duration="300"
+        android:duration="200"
         android:fromXDelta="0"
         android:fromYDelta="0"
-        android:startOffset="1500"
+        android:startOffset="1000"
         android:toXDelta="10"
         android:toYDelta="-10" />
 
-    <translate
-        android:duration="300"
-        android:fromXDelta="0"
-        android:fromYDelta="0"
-        android:startOffset="1800"
-        android:toXDelta="-10"
-        android:toYDelta="-10" />
+    <!--<translate-->
+        <!--android:duration="300"-->
+        <!--android:fromXDelta="0"-->
+        <!--android:fromYDelta="0"-->
+        <!--android:startOffset="1800"-->
+        <!--android:toXDelta="-10"-->
+        <!--android:toYDelta="-10" />-->
 
-    <translate
-        android:duration="300"
-        android:fromXDelta="0"
-        android:fromYDelta="0"
-        android:startOffset="2100"
-        android:toXDelta="10"
-        android:toYDelta="-10" />
-    <translate
-        android:duration="300"
-        android:fromXDelta="0"
-        android:fromYDelta="0"
-        android:startOffset="2400"
-        android:toXDelta="-10"
-        android:toYDelta="10" />
-    <translate
-        android:duration="300"
-        android:fromXDelta="0"
-        android:fromYDelta="0"
-        android:startOffset="2700"
-        android:toXDelta="10"
-        android:toYDelta="10" />
+    <!--<translate-->
+        <!--android:duration="300"-->
+        <!--android:fromXDelta="0"-->
+        <!--android:fromYDelta="0"-->
+        <!--android:startOffset="2100"-->
+        <!--android:toXDelta="10"-->
+        <!--android:toYDelta="-10" />-->
+    <!--<translate-->
+        <!--android:duration="300"-->
+        <!--android:fromXDelta="0"-->
+        <!--android:fromYDelta="0"-->
+        <!--android:startOffset="2400"-->
+        <!--android:toXDelta="-10"-->
+        <!--android:toYDelta="10" />-->
+    <!--<translate-->
+        <!--android:duration="300"-->
+        <!--android:fromXDelta="0"-->
+        <!--android:fromYDelta="0"-->
+        <!--android:startOffset="2700"-->
+        <!--android:toXDelta="10"-->
+        <!--android:toYDelta="10" />-->
 </set>
