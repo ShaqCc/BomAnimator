@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
 
     <RelativeLayout
@@ -10,14 +9,14 @@
         android:layout_height="300dp"
         android:layout_marginTop="30dp"
         android:background="@drawable/shape_black_corner_bg">
+
         <ImageView
             android:id="@+id/iv_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/icon_close"
-            />
+            android:layout_margin="16dp"
+            android:src="@mipmap/icon_close" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -25,56 +24,65 @@
             android:layout_marginTop="80dp"
             android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:text="第132434场  开奖结果："
                 android:textColor="#d7a901"
-                android:textSize="15sp"
-                android:text="第132434场  开奖结果："/>
+                android:textSize="15sp" />
+
             <TextView
                 android:id="@+id/tv_result"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
+                android:text=""
                 android:textColor="#d7a901"
-                android:textSize="15sp"
-                android:text=""/>
+                android:textSize="15sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
             android:gravity="bottom|center_horizontal"
             android:layoutAnimation="@anim/ball_layoutanim"
-            android:layout_alignParentBottom="true"
             android:orientation="horizontal">
+
             <com.bayin.boom.bomb.ColorBallTextView
                 android:id="@+id/reslut_ball_1"
-                style="@style/color_ball"/>
+                style="@style/color_ball" />
+
             <com.bayin.boom.bomb.ColorBallTextView
                 android:id="@+id/reslut_ball_2"
-                style="@style/color_ball"/>
+                style="@style/color_ball" />
+
             <com.bayin.boom.bomb.ColorBallTextView
                 android:id="@+id/reslut_ball_3"
-                style="@style/color_ball"/>
+                style="@style/color_ball" />
+
             <com.bayin.boom.bomb.ColorBallTextView
                 android:id="@+id/reslut_ball_4"
-                style="@style/color_ball"/>
+                style="@style/color_ball" />
+
             <com.bayin.boom.bomb.ColorBallTextView
                 android:id="@+id/reslut_ball_5"
-                style="@style/color_ball"/>
+                style="@style/color_ball" />
         </LinearLayout>
     </RelativeLayout>
+
     <FrameLayout
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center_horizontal">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/reslut_title"
-            />
+            android:src="@mipmap/reslut_title" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -61,6 +61,7 @@ public class RootLayout extends FrameLayout {
     private ObjectAnimator numberAlpha;
     private int overtime = 2;
     private int[] numberRes = {R.mipmap.time_01_2x, R.mipmap.time_02_2x, R.mipmap.time_03_2x};
+    private Animation shakeAnima;
 
     public RootLayout(@NonNull Context context) {
         this(context, null);
@@ -75,6 +76,9 @@ public class RootLayout extends FrameLayout {
     private final int TIME_COUNT = 1;
     private final int START_FIRE = 2;
     private final int CHANGE_NUMBER = 3;
+    private static final int STOP = -999;
+    private boolean isAborted = false;
+
 
     private Handler mHandler = new Handler() {
         @Override
@@ -86,21 +90,24 @@ public class RootLayout extends FrameLayout {
                     //1.时钟轮盘转动
                     mProgressAnimator.start();
                     //2.一秒后，开始数字变化 3-2-1
-                    sendEmptyMessageDelayed(TIME_COUNT, 1000);
+                    if (!isAborted)
+                        sendEmptyMessageDelayed(TIME_COUNT, 1000);
                     break;
                 case TIME_COUNT:
                     //倒计时动画
                     numberAlpha.start();
                     break;
                 case CHANGE_NUMBER:
-                    overtime--;
-                    if (overtime >= 0)
-                        timeView.getNumImageView().setImageResource(numberRes[overtime]);
-                    if (overtime == 0) {
-                        //开启烟花动画
-                        sendEmptyMessage(START_FIRE);
-                        numberAlpha.end();
-                        timeView.getNumImageView().setAlpha(1f);
+                    if (!isAborted) {
+                        overtime--;
+                        if (overtime >= 0)
+                            timeView.getNumImageView().setImageResource(numberRes[overtime]);
+                        if (overtime == 0) {
+                            //开启烟花动画
+                            sendEmptyMessage(START_FIRE);
+                            numberAlpha.end();
+                            timeView.getNumImageView().setAlpha(1f);
+                        }
                     }
                     break;
                 case START_FIRE:
@@ -109,8 +116,15 @@ public class RootLayout extends FrameLayout {
                     flowerLayout.startFire(1500);
                     flowerLayout.animate().translationXBy(10).translationYBy(40).setDuration(1000).start();
                     //屏幕开始震动
-                    Animation shakeAnima = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
                     startAnimation(shakeAnima);
+                    break;
+                case STOP:
+                    //人为中断动画
+                    mProgressAnimator.end();
+                    numberAlpha.end();
+                    flowerLayout.stop();
+                    flowerLayout.setVisibility(INVISIBLE);
+                    shakeAnima.reset();
                     break;
             }
         }
@@ -158,6 +172,8 @@ public class RootLayout extends FrameLayout {
         //1，轮盘转动
         mProgressAnimator = ObjectAnimator.ofInt(timeView.getmKeduview(), "progress", 0, 24);
         mProgressAnimator.setDuration(3000);
+        //震动动画
+        shakeAnima = AnimationUtils.loadAnimation(getContext(), R.anim.shake);
         //数字动画
         numberAlpha = ObjectAnimator.ofFloat(timeView.getNumImageView(), "alpha", 1f, 0f);
         numberAlpha.setDuration(1000);
@@ -224,4 +240,13 @@ public class RootLayout extends FrameLayout {
     public void startTimeCount() {
         mHandler.sendEmptyMessage(START);
     }
+
+    /**
+     * 终止动画
+     */
+    public void stop() {
+        isAborted = true;
+        mHandler.sendEmptyMessage(STOP);
+    }
+
 }

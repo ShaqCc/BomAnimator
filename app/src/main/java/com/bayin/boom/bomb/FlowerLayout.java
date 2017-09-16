@@ -167,14 +167,16 @@ public class FlowerLayout extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                reset();
-                //开始爆炸动画
-                startAnimation(scaleAlphaSet);
-                //中心爆炸
-                boomFire.setVisibility(VISIBLE);
-                boomFire.setScaleX(0f);
-                boomFire.setScaleY(0f);
-                boomFire.animate().scaleX(5f).scaleY(5f).alpha(0f).setDuration(200);
+                if (!isAborted){
+                    reset();
+                    //开始爆炸动画
+                    startAnimation(scaleAlphaSet);
+                    //中心爆炸
+                    boomFire.setVisibility(VISIBLE);
+                    boomFire.setScaleX(0f);
+                    boomFire.setScaleY(0f);
+                    boomFire.animate().scaleX(5f).scaleY(5f).alpha(0f).setDuration(200);
+                }
             }
 
             @Override
@@ -230,7 +232,10 @@ public class FlowerLayout extends FrameLayout {
         mHandler.sendEmptyMessageDelayed(END, time);
     }
 
+    private boolean isAborted = false;
+
     public void stop() {
         mAnimatorSet.end();
+        isAborted = true;
     }
 }

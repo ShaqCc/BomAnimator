@@ -4,13 +4,16 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AnticipateInterpolator;
@@ -50,6 +53,8 @@ public class NewBombActivity extends Activity {
     private ObjectAnimator r_3;
     private ObjectAnimator r_4;
     private ObjectAnimator r_5;
+    private boolean isAborted = false;
+    private int rootlayoutWidth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,18 +62,46 @@ public class NewBombActivity extends Activity {
         setContentView(R.layout.new_bomb_layout);
         rootlayout = (RootLayout) findViewById(R.id.rootlayout);
         viewFilm = findViewById(R.id.view_film);
+        findViewById(R.id.abort).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isAborted = true;
+                rootlayout.stop();
+                rootlayout.setVisibility(View.GONE);
+                showPopWindow();
+            }
+        });
+        //开始动画
         rootlayout.startTimeCount();
         explosionField = ExplosionField.attach2Window(this);
+
+        //发送结束动作
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                explosionField.explode(rootlayout);
-                viewFilm.setAlpha(0.7f);
-                viewFilm.setVisibility(View.VISIBLE);
-                viewFilm.animate().alpha(0f).setDuration(200).start();
-                showPopWindow();
+                //未人为终止
+                if (!isAborted) {
+                    explosionField.explode(rootlayout);
+                    viewFilm.setAlpha(0.7f);
+                    viewFilm.setVisibility(View.VISIBLE);
+                    viewFilm.animate().alpha(0f).setDuration(200).start();
+                    showPopWindow();
+                }
             }
         }, 4600);
+
+        //计算pop窗口宽度
+        ViewTreeObserver vto = rootlayout.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                rootlayoutWidth = rootlayout.getWidth();
+                if (rootlayoutWidth >0){
+                    LogUtil.log("窗口宽度"+rootlayoutWidth);
+                    rootlayout.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
     }
 
 
@@ -94,11 +127,11 @@ public class NewBombActivity extends Activity {
                 @Override
                 public void run() {
                     //小球滚动动画
-                    ball_1.animate().rotation(-30).translationXBy(-45).setInterpolator(new BounceInterpolator()).setDuration(1500).start();
-                    ball_2.animate().rotation(-10).translationXBy(-10).setInterpolator(new LinearInterpolator()).setDuration(500).start();
-                    ball_3.animate().rotation(20).translationXBy(30).setInterpolator(new LinearInterpolator()).setDuration(1000).start();
-                    ball_4.animate().rotation(-10).translationXBy(-15).setInterpolator(new LinearInterpolator()).setDuration(500).start();
-                    ball_5.animate().rotation(20).translationXBy(30).setInterpolator(new BounceInterpolator()).setDuration(1000).start();
+                    ball_1.animate().rotation(-30).translationXBy(-20).setInterpolator(new BounceInterpolator()).setDuration(1500).start();
+                    ball_2.animate().rotation(-10).translationXBy(-5).setInterpolator(new LinearInterpolator()).setDuration(500).start();
+                    ball_3.animate().rotation(20).translationXBy(15).setInterpolator(new LinearInterpolator()).setDuration(1000).start();
+                    ball_4.animate().rotation(-10).translationXBy(-10).setInterpolator(new LinearInterpolator()).setDuration(500).start();
+                    ball_5.animate().rotation(20).translationXBy(20).setInterpolator(new BounceInterpolator()).setDuration(1000).start();
                     //滚动结束开始循环浮动
                     ball_1_set.playTogether(y_1, r_1);
                     ball_1_set.setStartDelay(1400);
@@ -112,7 +145,7 @@ public class NewBombActivity extends Activity {
                     ball_3_set.setStartDelay(900);
                     ball_3_set.start();
 
-                    ball_4_set.playTogether( y_4, r_4);
+                    ball_4_set.playTogether(y_4, r_4);
                     ball_4_set.setStartDelay(400);
                     ball_4_set.start();
 
@@ -150,8 +183,8 @@ public class NewBombActivity extends Activity {
     private void initPop() {
         popupWindow = new PopupWindow(this);
         popupWindow.setOutsideTouchable(false);
-        popupWindow.setBackgroundDrawable(new BitmapDrawable());
-        popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        popupWindow.setWidth((int) (rootlayoutWidth*0.9));
         popupWindow.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         View inflate = View.inflate(this, R.layout.boom_result_layout, null);
         tvResult = (TextView) inflate.findViewById(R.id.tv_result);
@@ -186,7 +219,7 @@ public class NewBombActivity extends Activity {
         y_2.setDuration(800);
         y_2.setRepeatCount(1000);
         y_2.setRepeatMode(ValueAnimator.REVERSE);
-        r_2 = ObjectAnimator.ofFloat(ball_2, "rotation",-10, -25);
+        r_2 = ObjectAnimator.ofFloat(ball_2, "rotation", -10, -25);
         r_2.setDuration(800);
         r_2.setRepeatCount(1000);
         r_2.setRepeatMode(ValueAnimator.REVERSE);
@@ -198,7 +231,7 @@ public class NewBombActivity extends Activity {
         y_3.setDuration(800);
         y_3.setRepeatCount(1000);
         y_3.setRepeatMode(ValueAnimator.REVERSE);
-        r_3 = ObjectAnimator.ofFloat(ball_3, "rotation",20, 30);
+        r_3 = ObjectAnimator.ofFloat(ball_3, "rotation", 20, 30);
         r_3.setDuration(800);
         r_3.setRepeatCount(1000);
         r_3.setRepeatMode(ValueAnimator.REVERSE);

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
+    android:layout_marginTop="36dp"
+    android:layout_marginBottom="36dp"
     android:layout_height="match_parent"
     android:background="@drawable/shape_red_bg"
     android:orientation="vertical">
@@ -13,6 +15,13 @@
         android:layout_centerInParent="true"
         />
 
+    <Button
+        android:id="@+id/abort"
+        android:text="跳过"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        />
     <View
         android:id="@+id/view_film"
         android:layout_width="match_parent"

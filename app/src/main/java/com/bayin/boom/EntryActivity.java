@@ -30,7 +30,7 @@ public class EntryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
-                intent.setClass(EntryActivity.this,BoomActivity.class);
+                intent.setClass(EntryActivity.this,NewBombActivity.class);
                 startActivity(intent);
             }
         });
@@ -40,15 +40,6 @@ public class EntryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(EntryActivity.this,BallActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.zhadan).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(EntryActivity.this,NewBombActivity.class);
                 startActivity(intent);
             }
         });
