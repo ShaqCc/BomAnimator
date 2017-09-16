@@ -43,5 +43,14 @@ public class EntryActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        findViewById(R.id.zhadan).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(EntryActivity.this,NewBombActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

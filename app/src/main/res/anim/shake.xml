@@ -46,28 +46,28 @@
         android:toXDelta="10"
         android:toYDelta="-10" />
 
-    <!--<translate-->
-        <!--android:duration="300"-->
-        <!--android:fromXDelta="0"-->
-        <!--android:fromYDelta="0"-->
-        <!--android:startOffset="1800"-->
-        <!--android:toXDelta="-10"-->
-        <!--android:toYDelta="-10" />-->
+    <translate
+        android:duration="200"
+        android:fromXDelta="0"
+        android:fromYDelta="0"
+        android:startOffset="1200"
+        android:toXDelta="-10"
+        android:toYDelta="-10" />
 
-    <!--<translate-->
-        <!--android:duration="300"-->
-        <!--android:fromXDelta="0"-->
-        <!--android:fromYDelta="0"-->
-        <!--android:startOffset="2100"-->
-        <!--android:toXDelta="10"-->
-        <!--android:toYDelta="-10" />-->
-    <!--<translate-->
-        <!--android:duration="300"-->
-        <!--android:fromXDelta="0"-->
-        <!--android:fromYDelta="0"-->
-        <!--android:startOffset="2400"-->
-        <!--android:toXDelta="-10"-->
-        <!--android:toYDelta="10" />-->
+    <translate
+        android:duration="200"
+        android:fromXDelta="0"
+        android:fromYDelta="0"
+        android:startOffset="1400"
+        android:toXDelta="10"
+        android:toYDelta="-10" />
+    <translate
+        android:duration="200"
+        android:fromXDelta="0"
+        android:fromYDelta="0"
+        android:startOffset="1600"
+        android:toXDelta="-10"
+        android:toYDelta="10" />
     <!--<translate-->
         <!--android:duration="300"-->
         <!--android:fromXDelta="0"-->

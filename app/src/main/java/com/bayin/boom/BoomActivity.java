@@ -41,7 +41,9 @@ public class BoomActivity extends AppCompatActivity {
             super.handleMessage(msg);
             switch (msg.what) {
                 case BOOM:
+
                     explosionField.explode(bombLayout);
+                    rootView.startAnimation(mShakeAnim);
                     bombLayout.setVisibility(View.GONE);
                     mWhiteFilm.setVisibility(View.VISIBLE);
                     ObjectAnimator alpha = ObjectAnimator.ofFloat(mWhiteFilm, "alpha", 0f, 1f, 0f);
@@ -52,7 +54,7 @@ public class BoomActivity extends AppCompatActivity {
                     showPopWindow();
                     break;
                 case SHAKE:
-                    bombLayout.startAnimation(mShakeAnim);
+//                    bombLayout.startAnimation(mShakeAnim);
                     break;
             }
         }
@@ -64,7 +66,7 @@ public class BoomActivity extends AppCompatActivity {
     private ColorBallTextView ball_3;
     private ColorBallTextView ball_2;
     private ColorBallTextView ball_1;
-    private View mDecorView;
+    private View rootView;
 
     private void showPopWindow() {
         if (popupWindow == null)
@@ -116,6 +118,7 @@ public class BoomActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 closePop();
+                finish();
             }
         });
         popupWindow.setContentView(inflate);
@@ -128,7 +131,7 @@ public class BoomActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_boom);
 
-        mDecorView = getWindow().getDecorView();
+        rootView = findViewById(R.id.rootview);
 
         mWhiteFilm = findViewById(R.id.white_film);
 
@@ -147,7 +150,7 @@ public class BoomActivity extends AppCompatActivity {
 //        });
 
         bombLayout.startBomb();
-        mHandler.sendEmptyMessageDelayed(SHAKE,2500);
+//        mHandler.sendEmptyMessageDelayed(SHAKE,2500);
         mHandler.sendEmptyMessageDelayed(BOOM, 3200);
     }
 }

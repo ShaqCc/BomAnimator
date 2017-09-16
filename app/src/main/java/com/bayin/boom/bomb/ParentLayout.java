@@ -19,7 +19,7 @@ import com.bayin.boom.ScreenUtils;
 
 public class ParentLayout extends FrameLayout {
 
-    private BombLayout mZhaDan;
+    private BombView mZhaDan;
     private FlowerLayout mFlowerLight;
     private int mScreenWidth;
     private int mScreenHeight;
@@ -37,7 +37,7 @@ public class ParentLayout extends FrameLayout {
         mScreenWidth = ScreenUtils.getScreenWidth(context);
         mScreenHeight = ScreenUtils.getScreenHeight(context);
 
-        mZhaDan = new BombLayout(context);
+        mZhaDan = new BombView(context);
         addView(mZhaDan);
         mFlowerLight = new FlowerLayout(context);
         addView(mFlowerLight);

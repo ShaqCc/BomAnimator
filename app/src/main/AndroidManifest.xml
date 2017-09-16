@@ -27,6 +27,8 @@
         <activity
             android:name=".BallActivity"
             android:launchMode="singleTask"/>
+
+        <activity android:name=".NewBombActivity"/>
     </application>
 
 </manifest>

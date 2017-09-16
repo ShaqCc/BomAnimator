@@ -13,7 +13,9 @@ import com.bayin.boom.R;
 import com.bayin.boom.ScreenUtils;
 
 /****************************************
- * 功能说明:  1.直径占比 30% width
+ * 功能说明: 刻度盘
+ *
+ * 1.直径占比 30% width
  *
  * Author: Created by bayin on 2017/9/12.
  ****************************************/

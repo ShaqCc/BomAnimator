@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import com.bayin.boom.R;
 
 /****************************************
- * 功能说明:  
+ * 功能说明:  带倒计时的刻度盘
  *
  * Author: Created by bayin on 2017/9/12.
  ****************************************/
@@ -36,10 +36,6 @@ public class TimeView extends FrameLayout {
         mRootview = LayoutInflater.from(context).inflate(R.layout.include_timecount_layout, this, true);
         mKeduview = (KeduBackgroundView) mRootview.findViewById(R.id.keduview);
         mIvNumber = (ImageView) mRootview.findViewById(R.id.iv_number);
-    }
-
-    public void setKeduviewRadius(int radius){
-        mKeduview.setRadius(radius);
     }
 
     @Override

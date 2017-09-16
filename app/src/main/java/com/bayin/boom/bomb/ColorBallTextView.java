@@ -12,7 +12,7 @@ import android.view.Gravity;
 import com.bayin.boom.R;
 
 /****************************************
- * 功能说明:  
+ * 功能说明:  开奖号码控件
  *
  * Author: Created by bayin on 2017/9/14.
  ****************************************/

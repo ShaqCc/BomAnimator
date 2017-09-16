@@ -17,22 +17,18 @@ import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 import com.bayin.boom.R;
 import com.bayin.boom.ScreenUtils;
 
-import tyrantgit.explosionfield.ExplosionField;
-
 /****************************************
- * 功能说明:  
+ * 功能说明:
  *
  * Author: Created by bayin on 2017/9/12.
  ****************************************/
 
-public class BombLayout extends FrameLayout {
+public class BombView extends FrameLayout {
 
     private static final String TAG = "BombLayout";
     private static final int CHANGE = 1;//更换数字
@@ -75,15 +71,15 @@ public class BombLayout extends FrameLayout {
     private ObjectAnimator objAlpha;
     private ObjectAnimator mProgressAnimator;
 
-    public BombLayout(@NonNull Context context) {
+    public BombView(@NonNull Context context) {
         this(context, null);
     }
 
-    public BombLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
+    public BombView(@NonNull Context context, @Nullable AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public BombLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
+    public BombView(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         setWillNotDraw(false);
         //屏幕尺寸

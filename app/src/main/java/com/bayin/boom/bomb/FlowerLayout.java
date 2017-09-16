@@ -11,10 +11,8 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewPropertyAnimator;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -22,14 +20,17 @@ import android.view.animation.AnimationSet;
 import android.view.animation.ScaleAnimation;
 import android.widget.FrameLayout;
 
+import com.bayin.boom.Constans;
+import com.bayin.boom.LogUtil;
 import com.bayin.boom.R;
 import com.bayin.boom.RandomUtils;
+import com.bayin.boom.ScreenUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /****************************************
- * 功能说明:  
+ * 功能说明:  燃烧烟火控件
  *
  * Author: Created by bayin on 2017/9/14.
  ****************************************/
@@ -42,7 +43,11 @@ public class FlowerLayout extends FrameLayout {
     private View mCenterFire;
     private AnimatorSet mAnimatorSet;
     private List<ColorBallTextView> mBallList = new ArrayList<>();
-    private AnimationSet animationSet;
+    private AnimationSet scaleAlphaSet;
+    private int viewWidth;
+    private View boomFire;
+    private int screenWidth;
+    private int duration = 200;
 
     public FlowerLayout(@NonNull Context context) {
         this(context, null);
@@ -54,10 +59,14 @@ public class FlowerLayout extends FrameLayout {
 
     public FlowerLayout(@NonNull Context context, @Nullable AttributeSet attrs, @AttrRes int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        //屏幕宽度
+        screenWidth = ScreenUtils.getScreenWidth(context);
+        viewWidth = (int) (screenWidth * Constans.FLOWER_RATIO);
         View inflate = LayoutInflater.from(context).inflate(R.layout.test_flower_layout, this, true);
         mBgStar = inflate.findViewById(R.id.bg_star);
         mFlowrLight = inflate.findViewById(R.id.flower_light);
         mCenterFire = findViewById(R.id.center_fire);
+        boomFire = findViewById(R.id.boom_fire);
         initAnimation();
         //开奖数字
         ColorBallTextView ball_1 = (ColorBallTextView) inflate.findViewById(R.id.ball_1);
@@ -92,58 +101,44 @@ public class FlowerLayout extends FrameLayout {
     }
 
     /**
-     * 显示，隐藏球
-     * @param visible
-     */
-    private void setBallVisible(boolean visible){
-        if (visible){
-            for (int i = 0; i < mBallList.size(); i++) {
-                mBallList.get(i).setVisibility(VISIBLE);
-            }
-        }else {
-            for (int i = 0; i < mBallList.size(); i++) {
-                mBallList.get(i).setVisibility(GONE);
-            }
-        }
-    }
-    /**
      * 初始化动画
      */
     private void initAnimation() {
         mAnimatorSet = new AnimatorSet();
         //中心火花
         ObjectAnimator centerScaleX = ObjectAnimator.ofFloat(mCenterFire, "scaleX", 1f, 0.8f, 1.5f, 0.9f);
-        centerScaleX.setDuration(400);
+        centerScaleX.setDuration(duration);
         centerScaleX.setRepeatCount(10);
         centerScaleX.setRepeatMode(ValueAnimator.REVERSE);
 
         ObjectAnimator centerScaleY = ObjectAnimator.ofFloat(mCenterFire, "scaleY", 1f, 0.8f, 1.5f, 0.9f);
-        centerScaleY.setDuration(400);
+        centerScaleY.setDuration(duration);
         centerScaleY.setRepeatCount(10);
         centerScaleY.setRepeatMode(ValueAnimator.REVERSE);
 
         //背景星星
         ObjectAnimator alphaStar = ObjectAnimator.ofFloat(mBgStar, "alpha", 1f, 0.5f);
-        alphaStar.setDuration(100);
-        alphaStar.setRepeatCount(20);
+        alphaStar.setDuration(duration);
+        alphaStar.setRepeatCount(10);
         alphaStar.setRepeatMode(ValueAnimator.REVERSE);
 
         //火星四射
         ObjectAnimator lightScaleX = ObjectAnimator.ofFloat(mFlowrLight, "scaleX", 0f, 1f);
-        lightScaleX.setDuration(500);
+        lightScaleX.setDuration(duration);
         lightScaleX.setRepeatCount(10);
         lightScaleX.setRepeatMode(ValueAnimator.RESTART);
 
         ObjectAnimator lightScaleY = ObjectAnimator.ofFloat(mFlowrLight, "scaleY", 0f, 1f);
-        lightScaleY.setDuration(500);
+        lightScaleY.setDuration(duration);
         lightScaleY.setRepeatCount(10);
         lightScaleY.setRepeatMode(ValueAnimator.RESTART);
 
         //火星alpha
         ObjectAnimator lightAlpha = ObjectAnimator.ofFloat(mFlowrLight, "alpha", 0.5f, 1f);
-        lightAlpha.setDuration(1000);
+        lightAlpha.setDuration(200);
         lightAlpha.setRepeatCount(6);
         lightAlpha.setRepeatMode(ValueAnimator.RESTART);
+
 
         //爆炸
         ScaleAnimation scaleAnimation = new ScaleAnimation(1f, 3f, 1f, 3f,
@@ -155,9 +150,9 @@ public class FlowerLayout extends FrameLayout {
         alphaAnimation.setDuration(200);
         alphaAnimation.setFillAfter(true);
 
-        animationSet = new AnimationSet(false);
-        animationSet.addAnimation(scaleAnimation);
-        animationSet.addAnimation(alphaAnimation);
+        scaleAlphaSet = new AnimationSet(false);
+        scaleAlphaSet.addAnimation(scaleAnimation);
+        scaleAlphaSet.addAnimation(alphaAnimation);
 
 
         mAnimatorSet.play(centerScaleX).with(centerScaleY)
@@ -174,7 +169,12 @@ public class FlowerLayout extends FrameLayout {
             public void onAnimationEnd(Animator animation) {
                 reset();
                 //开始爆炸动画
-                startAnimation(animationSet);
+                startAnimation(scaleAlphaSet);
+                //中心爆炸
+                boomFire.setVisibility(VISIBLE);
+                boomFire.setScaleX(0f);
+                boomFire.setScaleY(0f);
+                boomFire.animate().scaleX(5f).scaleY(5f).alpha(0f).setDuration(200);
             }
 
             @Override
@@ -205,7 +205,7 @@ public class FlowerLayout extends FrameLayout {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        setMeasuredDimension(mBgStar.getMeasuredWidth(), mBgStar.getMeasuredHeight());
+        setMeasuredDimension(viewWidth, viewWidth);
 
     }
 
@@ -225,9 +225,9 @@ public class FlowerLayout extends FrameLayout {
     /**
      * 开始燃烧
      */
-    public void startFire(int time) {
+    public void startFire(long time) {
         mAnimatorSet.start();
-        mHandler.sendEmptyMessageDelayed(END, time * 1000);
+        mHandler.sendEmptyMessageDelayed(END, time);
     }
 
     public void stop() {
